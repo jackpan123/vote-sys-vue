@@ -13,7 +13,7 @@
                 用户名: 
             </el-col>
             <el-col :span="12">
-               <el-input v-model="input" placeholder="请输入内容"></el-input>
+               <el-input v-model="username" placeholder="请输入用户名"></el-input>
             </el-col>
         </el-row>
         <el-row class="inputDistance">
@@ -21,7 +21,7 @@
                 密码: 
             </el-col>
             <el-col :span="12">
-               <el-input placeholder="请输入密码" v-model="input" show-password></el-input>
+               <el-input placeholder="请输入密码" v-model="userpassword" show-password></el-input>
             </el-col>
             
         </el-row>
@@ -31,9 +31,9 @@
             </el-col>
             <el-col :span="12">
                 <router-link to="/register"><el-button>注册</el-button></router-link>
-                
             </el-col>
         </el-row>
+        
     </div>
   </div>
   </div>
@@ -42,6 +42,12 @@
 <script>
 export default {
     name: 'login',
+    data() {
+        return {
+            username: '',
+            userpassword: ''
+        }
+    }
 }
 </script>
 <style scoped>
