@@ -32,6 +32,7 @@
             <el-col :span="12">
                 <router-link to="/register"><el-button>注册</el-button></router-link>
             </el-col>
+            <p></p>
         </el-row>
         
     </div>
