@@ -1,4 +1,4 @@
-# hello-world
+# Vue for vote system
 
 ## Project setup
 ```
