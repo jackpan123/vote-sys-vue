@@ -1,7 +1,7 @@
 <template>
 <div id="loginPage">
     <div id="loginApp">
-    <img src="../assets/logo.png">
+    <img src="../assets/Simbol_Konohagakure.png">
       <div>
         <p id="titleContent">
           QW投票问卷
