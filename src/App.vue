@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="{backgroundImage:'url(./assets/login-picture.jpg)'}">
     <router-view/>
   </div>
   

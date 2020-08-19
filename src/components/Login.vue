@@ -27,7 +27,7 @@
         </el-row>
         <el-row class="inputDistance">
             <el-col :span="12">
-                <el-button type="primary">登陆</el-button>
+                <el-button type="primary" v-on:click="login">登陆</el-button>
             </el-col>
             <el-col :span="12">
                 <router-link to="/register"><el-button>注册</el-button></router-link>
@@ -47,6 +47,27 @@ export default {
         return {
             username: '',
             userpassword: ''
+        }
+    },
+
+    methods: {
+        login: function() {
+            let userInfo = {
+                username: this.username,
+                password: this.userpassword
+            }
+            this.axios.post("http://localhost:8081/authenticate", userInfo).then(
+                (response) => {
+                    console.log(response)
+                }
+            ).catch((error) => {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                }
+                
+            })
         }
     }
 }
