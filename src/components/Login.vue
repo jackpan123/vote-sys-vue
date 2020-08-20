@@ -7,8 +7,8 @@
             QW投票问卷
         </p>
         </div>
-        <Modal :show="show" :title="title" @hideModal="hideModal" @submit="submit">
-            <p>{{ message }}</p>
+        <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
+            <p>{{ modal.message }}</p>
         </Modal>
         <div id="login">
             <el-row class="inputDistance">
@@ -16,7 +16,7 @@
                     用户名: 
                 </el-col>
                 <el-col :span="12">
-                    <el-input v-model="username" placeholder="请输入用户名"></el-input>
+                    <el-input v-model="user.username" placeholder="请输入用户名"></el-input>
                 </el-col>
             </el-row>
             <el-row class="inputDistance">
@@ -24,7 +24,7 @@
                     密码: 
                 </el-col>
                 <el-col :span="12">
-                    <el-input placeholder="请输入密码" v-model="userpassword" show-password></el-input>
+                    <el-input placeholder="请输入密码" v-model="user.userpassword" show-password></el-input>
                 </el-col>
                 
             </el-row>
@@ -49,11 +49,16 @@ export default {
     name: 'login',
     data() {
         return {
-            username: '',
-            userpassword: '',
-            title: '友情提示',
-            show: false,
-            message: ''
+            user: {
+                username: '',
+                userpassword: ''
+            },
+
+            modal: {
+                title: '友情提示',
+                show: false,
+                message: ''
+            }    
         }
     },
 
@@ -64,8 +69,8 @@ export default {
     methods: {
         login: function() {
             let userInfo = {
-                username: this.username,
-                password: this.userpassword
+                username: this.user.username,
+                password: this.user.userpassword
             }
             this.axios.post("http://localhost:8081/authenticate", userInfo).then(
                 (response) => {
@@ -73,8 +78,8 @@ export default {
                 }
             ).catch((error) => {
                 if (error.response.status === 401) {
-                    this.message = '账号或者密码错误',
-                    this.show = true
+                    this.modal.message = '账号或者密码错误',
+                    this.modal.show = true
                 }
                 if (error.response) {
                     console.log(error.response.data);
@@ -87,12 +92,12 @@ export default {
 
         hideModal() {
             // 取消弹窗回调
-            this.show = false
+            this.modal.show = false
         },
 
         submit() {
             // 确认弹窗回调
-            this.show = false
+            this.modal.show = false
         }
     }
 }
