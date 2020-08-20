@@ -24,9 +24,8 @@
                     密码: 
                 </el-col>
                 <el-col :span="12">
-                    <el-input placeholder="请输入密码" v-model="user.userpassword" show-password></el-input>
+                    <el-input placeholder="请输入密码" v-model="user.password" show-password></el-input>
                 </el-col>
-                
             </el-row>
             <el-row class="inputDistance">
                 <el-col :span="12">
@@ -51,7 +50,7 @@ export default {
         return {
             user: {
                 username: '',
-                userpassword: ''
+                password: ''
             },
 
             modal: {
@@ -68,11 +67,7 @@ export default {
 
     methods: {
         login: function() {
-            let userInfo = {
-                username: this.user.username,
-                password: this.user.userpassword
-            }
-            this.axios.post("http://localhost:8081/authenticate", userInfo).then(
+            this.axios.post("http://localhost:8081/authenticate", this.user).then(
                 (response) => {
                     console.log(response)
                 }
