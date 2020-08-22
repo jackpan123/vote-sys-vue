@@ -4,9 +4,13 @@ import './plugins/element.js'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
-import Login from '@/components/Login'
+import IndexPage from '@/components/IndexPage'
 import Register from '@/components/Register'
+import UserLogin from '@/components/UserLogin'
+import Vant from 'vant';
+import 'vant/lib/index.css';
 
+Vue.use(Vant);
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -14,11 +18,15 @@ let router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: Login,
+      component: IndexPage,
     },
     {
       path: '/register',
       component: Register,
+    },
+    {
+      path: '/login',
+      component: UserLogin,
     }
   ]
 })

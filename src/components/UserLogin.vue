@@ -1,6 +1,6 @@
 <template>
-  <div id="registerPage">
-    <van-nav-bar title="用户注册" left-text="返回" left-arrow @click-left="onClickLeft" />
+  <div id="userLogin">
+    <van-nav-bar title="用户登陆" left-text="返回" left-arrow @click-left="onClickLeft" />
     <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
         <p>{{ modal.message }}</p>
     </Modal>
@@ -8,7 +8,7 @@
       <div style="margin: 16% 16px 16px 16px;">
         <van-field
           v-model="registerInfo.loginName"
-          name="loginName"
+          name="username"
           label="用户名"
           placeholder="用户名"
           :rules="[{ required: true, message: '请填写用户名' }]"
@@ -25,25 +25,7 @@
         />
       </div>
       <div style="margin: 16px;">
-        <van-field
-          v-model="registerInfo.name"
-          name="name"
-          label="姓名"
-          placeholder="姓名"
-          :rules="[{ required: true, message: '请填写姓名' }]"
-        />
-      </div>
-      <div style="margin: 16px;">
-        <van-field
-          v-model="registerInfo.mobile"
-          name="mobile"
-          label="手机号"
-          placeholder="手机号"
-          :rules="[{ required: true, message: '请填写手机号' }]"
-        />
-      </div>
-      <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">提交注册</van-button>
+        <van-button round block type="info" native-type="submit">登陆账户</van-button>
       </div>
     </van-form>
   </div>
@@ -92,16 +74,19 @@ export default {
     onSubmit(values) {
       console.log("submit", values);
       this.axios
-        .post("http://localhost:8081/user/v1.0/register", values)
+        .post("http://localhost:8081/authenticate", values)
         .then((response) => {
+
           console.log(response);
-            this.modal.message = "恭喜你，注册成功！";
-            this.modal.show = true;
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            this.modal.message = "信息格式错误";
-            this.modal.show = true;
+            (this.modal.message = "账号或者密码错误"), (this.modal.show = true);
+          }
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
           }
         });
     },
@@ -122,7 +107,7 @@ export default {
 </script>
 
 <style>
-#registerPage {
+#userLogin {
   background: url("../assets/login-picture.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
