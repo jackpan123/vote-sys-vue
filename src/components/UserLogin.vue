@@ -32,23 +32,7 @@
 </template>
 
 <script>
-// export default {
-//   data() {
-//     return {
-//       registerInfo: {
-//         name: "",
-//         password: "",
-//         mobile: "",
-//         loginName: "",
-//       },
-//     };
-//   },
-//   mounted () {
-//     this.$axios
-//       .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-//       .then(response => (console.log(response)))
-//   }
-// };
+
 import Modal from "./Modal.vue";
 import { Toast } from "vant";
 export default {
@@ -76,22 +60,17 @@ export default {
       this.axios
         .post("http://localhost:8081/authenticate", values)
         .then((response) => {
-
-          console.log(response);
+          localStorage.setItem('accessToken', 'Bearer ' + response.data.token)
+          this.$router.push({ path: "/votingHall" });
         })
         .catch((error) => {
           if (error.response.status === 401) {
             (this.modal.message = "账号或者密码错误"), (this.modal.show = true);
           }
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          }
         });
     },
     onClickLeft() {
-      Toast("返回");
+      Toast("返回主页");
       this.$router.push({ path: "/" });
     },
     hideModal() {

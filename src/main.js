@@ -7,6 +7,8 @@ import VueRouter from 'vue-router'
 import IndexPage from '@/components/IndexPage'
 import Register from '@/components/Register'
 import UserLogin from '@/components/UserLogin'
+import VotingHall from '@/components/VotingHall'
+import CreateVote from '@/components/CreateVote'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
@@ -27,7 +29,15 @@ let router = new VueRouter({
     {
       path: '/login',
       component: UserLogin,
-    }
+    },
+    {
+      path: '/votingHall',
+      component: VotingHall,
+    },
+    {
+      path: '/createVote',
+      component: CreateVote,
+    },
   ]
 })
 new Vue({

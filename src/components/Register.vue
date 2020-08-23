@@ -50,23 +50,6 @@
 </template>
 
 <script>
-// export default {
-//   data() {
-//     return {
-//       registerInfo: {
-//         name: "",
-//         password: "",
-//         mobile: "",
-//         loginName: "",
-//       },
-//     };
-//   },
-//   mounted () {
-//     this.$axios
-//       .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-//       .then(response => (console.log(response)))
-//   }
-// };
 import Modal from "./Modal.vue";
 import { Toast } from "vant";
 export default {

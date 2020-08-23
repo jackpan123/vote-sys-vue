@@ -2,11 +2,11 @@
   <div id="indexPage">
     <div id="loginApp">
       <img src="../assets/Simbol_Konohagakure.png" />
-      <div>
+      <div style="margin: 16px">
         <p id="titleContent">QW投票问卷</p>
       </div>
-      <div id="login">    
-        <van-row>
+      <div style="margin: 16px;">
+        <van-row type="flex" justify="center">
           <van-col span="8">
             <van-button type="primary" to="/login">账户登陆</van-button>
           </van-col>
@@ -20,9 +20,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 <style scoped>
 #loginApp {
