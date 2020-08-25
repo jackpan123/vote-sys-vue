@@ -40,13 +40,19 @@
             <van-switch v-model="anonymous" size="24" />
           </template>
         </van-cell>
-        <van-datetime-picker
+        <van-cell is-link @click="showPopup" title="投票截止时间" :value="voteEnd"></van-cell>
+        <van-popup v-model="show" position="bottom" :style="{ height: '30%' }" >
+          <van-datetime-picker
           v-model="currentDate"
           type="datetime"
           title="投票截止时间"
           :min-date="minDate"
           :max-date="maxDate"
+          @cancel="cancel"
+          @confirm="confirm"
         />
+        </van-popup>
+        
       </div>
 
       <div style="margin: 16px">
@@ -57,10 +63,13 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   data() {
     return {
-      minDate: new Date(2020, 0, 1),
+      voteEnd: "fdaf",
+      show: false,
+      minDate: new Date(),
       maxDate: new Date(2025, 10, 1),
       currentDate: new Date(),
       multiChoice: "false",
@@ -99,6 +108,25 @@ export default {
         }
       }
     },
+    showPopup() {
+      this.show = true;
+    },
+
+    cancel() {
+      this.show = false;
+      this.voteEnd = new Date();
+      console.log(this.show);
+    },
+    confirm(value) {
+      this.show = false;
+      this.voteEnd = this.format_date(value);
+      console.log(value);
+    },
+    format_date(value){
+         if (value) {
+           return moment(String(value)).format('YYYY-MM-DD HH:mm')
+          }
+      },
   },
 };
 </script>
