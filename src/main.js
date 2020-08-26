@@ -12,10 +12,14 @@ import CreateVote from '@/components/CreateVote'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
+const instance = axios.create({
+  baseURL: 'http://localhost:8081/',
+  timeout: 30000
+});
 Vue.use(Vant);
-Vue.use(VueAxios, axios)
-Vue.config.productionTip = false
-Vue.use(VueRouter)
+Vue.use(VueAxios, instance);
+Vue.config.productionTip = false;
+Vue.use(VueRouter);
 let router = new VueRouter({
   routes: [
     {
@@ -39,7 +43,7 @@ let router = new VueRouter({
       component: CreateVote,
     },
   ]
-})
+});
 new Vue({
   router,
   render: h => h(App),

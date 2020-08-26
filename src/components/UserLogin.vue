@@ -58,7 +58,7 @@ export default {
     onSubmit(values) {
       console.log("submit", values);
       this.axios
-        .post("http://localhost:8081/authenticate", values)
+        .post("/authenticate", values)
         .then((response) => {
           localStorage.setItem('accessToken', 'Bearer ' + response.data.token)
           this.$router.push({ path: "/votingHall" });

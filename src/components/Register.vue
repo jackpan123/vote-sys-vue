@@ -75,7 +75,7 @@ export default {
     onSubmit(values) {
       console.log("submit", values);
       this.axios
-        .post("http://localhost:8081/user/v1.0/register", values)
+        .post("/user/v1.0/register", values)
         .then((response) => {
           console.log(response);
             this.modal.message = "恭喜你，注册成功！";
