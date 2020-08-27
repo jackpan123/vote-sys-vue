@@ -1,6 +1,6 @@
 <template>
 <div>
-<van-nav-bar title="用户注册" left-text="返回主页" right-text="创建投票" left-arrow @click-left="onClickLeft" />
+<van-nav-bar title="用户注册" left-text="返回主页" right-text="创建投票" left-arrow @click-left="onClickLeft" @click-right="onClickRight"/>
   <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
     <van-cell v-for="item in list" :key="item" :title="item" />
   </van-list>
@@ -39,7 +39,7 @@ export default {
       this.$router.push({ path: "/" });
     },
     onClickRight() {
-      
+      this.$router.push({ path: "/createVote" });
     },
   },
 };

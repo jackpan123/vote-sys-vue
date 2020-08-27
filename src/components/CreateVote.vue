@@ -2,7 +2,7 @@
   <div>
     <van-nav-bar title="创建投票" left-text="返回" left-arrow @click-left="onClickLeft" />
     <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
-        <p>{{ modal.message }}</p>
+      <p>{{ modal.message }}</p>
     </Modal>
     <van-form @submit="onSubmit">
       <van-field
@@ -16,7 +16,11 @@
         placeholder="请输入投票主题"
         show-word-limit
       />
-      <div style="margin: 16px" v-for="(option,index) in voteIncrementDTO.voteItemList" :key="index">
+      <div
+        style="margin: 16px"
+        v-for="(option,index) in voteIncrementDTO.voteItemList"
+        :key="index"
+      >
         <van-row type="flex" justify="center">
           <van-col @click="removeOption(option)" span="4">
             <van-button plain size="small" icon="close" type="info" />
@@ -106,15 +110,22 @@ export default {
   methods: {
     onSubmit() {
       this.axios
-        .post("/vote/v1.0/increment", this.voteIncrementDTO)
+        .post("/vote/v1.0/increment", this.voteIncrementDTO, {
+          headers: {
+            Authorization: localStorage.getItem("accessToken"),
+          },
+        })
         .then((response) => {
           console.log(response);
-            this.modal.message = "创建投票成功";
-            this.modal.show = true;
+          this.modal.message = "创建投票成功";
+          this.modal.show = true;
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            this.modal.message = "投票信息格式错误";
+            this.modal.message = "账户未登录";
+            this.modal.show = true;
+          } else if (error.response.status === 500) {
+            this.modal.message = "服务器繁忙，请稍后尝试";
             this.modal.show = true;
           }
         });
