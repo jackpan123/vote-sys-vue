@@ -46,46 +46,38 @@ export default {
   },
   methods: {
     onLoad() {
-      // 异步更新数据
-      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        this.page++;
-        let url =
-          "/vote/v1.0/center?page=" + this.page + "&count=" + this.count;
-        this.axios
-          .get(url, {
-            headers: {
-              Authorization: localStorage.getItem("accessToken"),
-            },
-          })
-          .then((response) => {
-            this.total = response.data.total;
-            for (let i = 0; i < response.data.items.length; ++i) {
-              this.list.push(response.data.items[i]);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            if (error.response.status === 401) {
-              this.modal.message = "账户未登录";
-              this.modal.show = true;
-            } else if (error.response.status >= 500) {
-              this.modal.message = "服务器繁忙，请稍后尝试";
-              this.modal.show = true;
-            }
-          });
-        // for (let i = 0; i < 10; i++) {
-        //   this.list.push(this.list.length + 1);
-        // }
+      this.page++;
+      let url = "/vote/v1.0/center?page=" + this.page + "&count=" + this.count;
+      this.axios
+        .get(url, {
+          headers: {
+            Authorization: localStorage.getItem("accessToken"),
+          },
+        })
+        .then((response) => {
+          this.total = response.data.total;
+          for (let i = 0; i < response.data.items.length; ++i) {
+            this.list.push(response.data.items[i]);
+          }
 
-        // 加载状态结束
-        this.loading = false;
+          // 加载状态结束
+          this.loading = false;
 
-        // 数据全部加载完成
-        if (this.page * this.count >= this.total) {
-          this.finished = true;
-        }
-      }, 1000);
+          // 数据全部加载完成
+          if (this.page * this.count >= this.total) {
+            this.finished = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            this.modal.message = "账户未登录";
+            this.modal.show = true;
+          } else if (error.response.status >= 500) {
+            this.modal.message = "服务器繁忙，请稍后尝试";
+            this.modal.show = true;
+          }
+        });
     },
     onClickLeft() {
       this.$router.push({ path: "/" });
