@@ -2,7 +2,7 @@
   <div id="registerPage">
     <van-nav-bar title="用户注册" left-text="返回" left-arrow @click-left="onClickLeft" />
     <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
-        <p>{{ modal.message }}</p>
+      <p>{{ modal.message }}</p>
     </Modal>
     <van-form @submit="onSubmit">
       <div style="margin: 16% 16px 16px 16px;">
@@ -77,13 +77,21 @@ export default {
       this.axios
         .post("/user/v1.0/register", values)
         .then((response) => {
-          console.log(response);
+          if (response.data.code === 10030) {
+            Toast(response.data.message);
+            this.modal.message = response.data.message;
+            this.modal.show = true;
+          } else if (response.data.code === 0) {
             this.modal.message = "恭喜你，注册成功！";
             this.modal.show = true;
+          } else {
+            this.modal.message = "恭喜你，注册成功！";
+            this.modal.show = true;
+          }
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            this.modal.message = "信息格式错误";
+            this.modal.message = "请先登陆";
             this.modal.show = true;
           }
         });
