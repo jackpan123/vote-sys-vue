@@ -1,9 +1,6 @@
 <template>
   <div id="userLogin">
     <van-nav-bar title="用户登陆" left-text="返回" left-arrow @click-left="onClickLeft" />
-    <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
-        <p>{{ modal.message }}</p>
-    </Modal>
     <van-form @submit="onSubmit">
       <div style="margin: 16% 16px 16px 16px;">
         <van-field
@@ -32,8 +29,6 @@
 </template>
 
 <script>
-
-import Modal from "./Modal.vue";
 import { Toast } from "vant";
 export default {
   data() {
@@ -44,15 +39,7 @@ export default {
         mobile: "",
         loginName: "",
       },
-      modal: {
-        title: "友情提示",
-        show: false,
-        message: "",
-      },
     };
-  },
-  components: {
-    Modal,
   },
   methods: {
     onSubmit(values) {
@@ -65,21 +52,13 @@ export default {
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            (this.modal.message = "账号或者密码错误"), (this.modal.show = true);
+            Toast("账号或者密码错误")
           }
         });
     },
     onClickLeft() {
       Toast("返回主页");
       this.$router.push({ path: "/" });
-    },
-    hideModal() {
-      // 取消弹窗回调
-      this.modal.show = false;
-    },
-    submit() {
-      // 确认弹窗回调
-      this.modal.show = false;
     },
   },
 };

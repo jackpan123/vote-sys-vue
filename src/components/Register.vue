@@ -1,9 +1,6 @@
 <template>
   <div id="registerPage">
     <van-nav-bar title="用户注册" left-text="返回" left-arrow @click-left="onClickLeft" />
-    <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
-      <p>{{ modal.message }}</p>
-    </Modal>
     <van-form @submit="onSubmit">
       <div style="margin: 16% 16px 16px 16px;">
         <van-field
@@ -50,7 +47,6 @@
 </template>
 
 <script>
-import Modal from "./Modal.vue";
 import { Toast } from "vant";
 export default {
   data() {
@@ -68,9 +64,6 @@ export default {
       },
     };
   },
-  components: {
-    Modal,
-  },
   methods: {
     onSubmit(values) {
       console.log("submit", values);
@@ -79,34 +72,21 @@ export default {
         .then((response) => {
           if (response.data.code === 10030) {
             Toast(response.data.message);
-            this.modal.message = response.data.message;
-            this.modal.show = true;
           } else if (response.data.code === 0) {
-            this.modal.message = "恭喜你，注册成功！";
-            this.modal.show = true;
+            Toast("恭喜你，注册成功！");
           } else {
-            this.modal.message = "恭喜你，注册成功！";
-            this.modal.show = true;
+            Toast("恭喜你，注册成功！");
           }
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            this.modal.message = "请先登陆";
-            this.modal.show = true;
+            Toast("请先登陆");
           }
         });
     },
     onClickLeft() {
       Toast("返回");
       this.$router.push({ path: "/" });
-    },
-    hideModal() {
-      // 取消弹窗回调
-      this.modal.show = false;
-    },
-    submit() {
-      // 确认弹窗回调
-      this.modal.show = false;
     },
   },
 };

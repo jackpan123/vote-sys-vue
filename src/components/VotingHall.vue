@@ -8,9 +8,6 @@
       @click-left="onClickLeft"
       @click-right="onClickRight"
     />
-    <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
-      <p>{{ modal.message }}</p>
-    </Modal>
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <van-cell
         @click="viewVote(item.id)"
@@ -24,7 +21,7 @@
 </template>
 
 <script>
-import Modal from "./Modal.vue";
+import { Toast } from 'vant';
 export default {
   data() {
     return {
@@ -34,15 +31,7 @@ export default {
       page: 0,
       count: 20,
       total: 0,
-      modal: {
-        title: "友情提示",
-        show: false,
-        message: "",
-      },
     };
-  },
-  components: {
-    Modal,
   },
   methods: {
     onLoad() {
@@ -71,11 +60,9 @@ export default {
         .catch((error) => {
           console.log(error);
           if (error.response.status === 401) {
-            this.modal.message = "账户未登录";
-            this.modal.show = true;
+            Toast("账户未登录");
           } else if (error.response.status >= 500) {
-            this.modal.message = "服务器繁忙，请稍后尝试";
-            this.modal.show = true;
+            Toast("服务器繁忙，请稍后尝试");
           }
         });
     },
@@ -84,14 +71,6 @@ export default {
     },
     onClickRight() {
       this.$router.push({ path: "/createVote" });
-    },
-    hideModal() {
-      // 取消弹窗回调
-      this.modal.show = false;
-    },
-    submit() {
-      // 确认弹窗回调
-      this.modal.show = false;
     },
     viewVote(id) {
       this.axios

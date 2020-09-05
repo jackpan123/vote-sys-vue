@@ -1,9 +1,6 @@
 <template>
   <div>
     <van-nav-bar title="创建投票" left-text="返回" left-arrow @click-left="onClickLeft" />
-    <Modal :show="modal.show" :title="modal.title" @hideModal="hideModal" @submit="submit">
-      <p>{{ modal.message }}</p>
-    </Modal>
     <van-form @submit="onSubmit">
       <van-field
         rows="2"
@@ -70,7 +67,6 @@
 </template>
 
 <script>
-import Modal from "./Modal.vue";
 import moment from "moment";
 import { Toast } from "vant";
 export default {
@@ -97,15 +93,7 @@ export default {
         anonymous: "false",
         voteEnd: new Date(),
       },
-      modal: {
-        title: "友情提示",
-        show: false,
-        message: "",
-      },
     };
-  },
-  components: {
-    Modal,
   },
   methods: {
     onSubmit() {
@@ -117,16 +105,13 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          this.modal.message = "创建投票成功";
-          this.modal.show = true;
+          Toast("创建投票成功");
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            this.modal.message = "账户未登录";
-            this.modal.show = true;
-          } else if (error.response.status === 500) {
-            this.modal.message = "服务器繁忙，请稍后尝试";
-            this.modal.show = true;
+            Toast("账户未登录");
+          } else if (error.response.status >= 500) {
+            Toast("服务器繁忙，请稍后尝试");
           }
         });
     },
@@ -166,14 +151,6 @@ export default {
     onClickLeft() {
       Toast("返回");
       this.$router.push({ path: "/votingHall" });
-    },
-    hideModal() {
-      // 取消弹窗回调
-      this.modal.show = false;
-    },
-    submit() {
-      // 确认弹窗回调
-      this.modal.show = false;
     },
   },
 };
