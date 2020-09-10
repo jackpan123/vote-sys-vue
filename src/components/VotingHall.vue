@@ -85,11 +85,10 @@ export default {
         .catch((error) => {
           console.log(error);
           if (error.response.status === 401) {
-            this.modal.message = "账户未登录";
-            this.modal.show = true;
+            Toast("账户未登录");
+            this.$router.push({ path: "/" });
           } else if (error.response.status >= 500) {
-            this.modal.message = "服务器繁忙，请稍后尝试";
-            this.modal.show = true;
+            Toast("服务器繁忙，请稍后尝试");
           }
         });
     },
