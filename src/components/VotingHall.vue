@@ -87,6 +87,8 @@ export default {
           if (error.response.status === 401) {
             Toast("账户未登录");
             this.$router.push({ path: "/" });
+          } if (error.response.status == 404) {
+            Toast("该投票不存在")
           } else if (error.response.status >= 500) {
             Toast("服务器繁忙，请稍后尝试");
           }
