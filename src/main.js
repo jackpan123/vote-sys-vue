@@ -9,6 +9,7 @@ import Register from '@/components/Register'
 import UserLogin from '@/components/UserLogin'
 import VotingHall from '@/components/VotingHall'
 import CreateVote from '@/components/CreateVote'
+import VoteDetail from '@/components/VoteDetail'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 
@@ -41,6 +42,11 @@ let router = new VueRouter({
     {
       path: '/createVote',
       component: CreateVote,
+    },
+    {
+      path: '/voteDetail/:id',
+      component: VoteDetail,
+      props: true
     },
   ]
 });

@@ -73,26 +73,27 @@ export default {
       this.$router.push({ path: "/createVote" });
     },
     viewVote(id) {
-      this.axios
-        .get("/vote/v1.0/voteDetail/" + id, {
-          headers: {
-            Authorization: localStorage.getItem("accessToken"),
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error.response.status === 401) {
-            Toast("账户未登录");
-            this.$router.push({ path: "/" });
-          } if (error.response.status == 404) {
-            Toast("该投票不存在")
-          } else if (error.response.status >= 500) {
-            Toast("服务器繁忙，请稍后尝试");
-          }
-        });
+      // this.axios
+      //   .get("/vote/v1.0/voteDetail/" + id, {
+      //     headers: {
+      //       Authorization: localStorage.getItem("accessToken"),
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     if (error.response.status === 401) {
+      //       Toast("账户未登录");
+      //       this.$router.push({ path: "/" });
+      //     } if (error.response.status == 404) {
+      //       Toast("该投票不存在")
+      //     } else if (error.response.status >= 500) {
+      //       Toast("服务器繁忙，请稍后尝试");
+      //     }
+      //   });
+      this.$router.push({ path: "/voteDetail/" + id});
     },
   },
 };

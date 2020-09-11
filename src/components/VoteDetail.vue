@@ -7,10 +7,26 @@
 <script>
 import { Toast } from "vant";
 export default {
-  data() {},
+  props: [
+    "id"
+  ],
+  data() {
+    return {
+
+    };
+  },
+
+  created () {
+    this.fetchData();
+  },
 
   methods: {
+    fetchData() {
+      console.log("fdafa");
+      console.log(this.id);
+    },
     onClickLeft() {
+      Toast("大厅");
       this.$router.push({ path: "/votingHall" });
     },
   },
