@@ -1,29 +1,65 @@
 <template>
   <div>
-      <van-nav-bar title="投票详情" left-text="返回大厅" left-arrow @click-left="onClickLeft" />
-      <van-cell title="投票标题" :value="voteTitle" />
-      <van-cell v-for="item in voteItemList" :key="item" :title="item" value="内容" />
-      <van-cell-group>
-        
-        
-      </van-cell-group>
+    <van-nav-bar
+      title="投票详情"
+      left-text="返回大厅"
+      left-arrow
+      @click-left="onClickLeft"
+    />
+    <van-cell title="投票标题" :value="voteTitle" />
+
+    <div v-if="multiChoice == 0">
+      <van-radio-group v-model="radio">
+        <van-cell-group>
+          <van-cell
+            v-for="item in voteItemList"
+            :key="item.id"
+            :title="`选项： ${item.itemContext}`"
+            clickable
+            @click="radioClick(item.id)"
+          >
+            <template #right-icon>
+              <van-radio :name="item.id" />
+            </template>
+          </van-cell>
+        </van-cell-group>
+      </van-radio-group>
+    </div>
+    <div v-else>
+      <van-checkbox-group v-model="result">
+        <van-cell-group>
+          <van-cell
+            v-for="(item, index) in voteItemList"
+            clickable
+            :key="item.id"
+            :title="`选项： ${item.itemContext}`"
+            @click="toggle(index)"
+          >
+            <template #right-icon>
+              <van-checkbox :name="item" shape="square" ref="checkboxes" />
+            </template>
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+    </div>
   </div>
 </template>
 
 <script>
 import { Toast } from "vant";
 export default {
-  props: [
-    "id"
-  ],
+  props: ["id"],
   data() {
     return {
       voteTitle: "",
-      voteItemList: []
+      voteItemList: [],
+      result: [],
+      radio: "",
+      multiChoice: 0,
     };
   },
 
-  created () {
+  created() {
     this.fetchData();
   },
 
@@ -39,15 +75,15 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response)
-          this.voteTitle = response.data.voteTitle
-          this.voteItemList.push(response.data.voteItem)
+          console.log(response);
+          this.voteTitle = response.data.voteTitle;
+          let itemJson = JSON.parse(response.data.voteItem);
+          this.voteItemList = itemJson;
+          this.multiChoice = response.data.multiChoice;
           // this.total = response.data.total;
           // for (let i = 0; i < response.data.items.length; ++i) {
           //   this.list.push(response.data.items[i]);
           // }
-
-          
         })
         .catch((error) => {
           console.log(error);
@@ -61,6 +97,14 @@ export default {
     onClickLeft() {
       Toast("大厅");
       this.$router.push({ path: "/votingHall" });
+    },
+    toggle(index) {
+      this.$refs.checkboxes[index].toggle();
+      console.log(this.result);
+    },
+    radioClick(index) {
+      this.radio = index;
+      console.log(index);
     },
   },
 };
