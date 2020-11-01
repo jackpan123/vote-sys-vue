@@ -7,7 +7,9 @@
       @click-left="onClickLeft"
     />
     <van-cell title="投票标题" :value="voteTitle" />
-
+    <van-cell title="剩余投票时间" >
+      <van-count-down :time="time" format="DD 天 HH 时 mm 分 ss 秒" />
+    </van-cell>
     <div v-if="multiChoice == 0">
       <van-radio-group v-model="radio">
         <van-cell-group>
@@ -56,6 +58,7 @@ export default {
       result: [],
       radio: "",
       multiChoice: 0,
+      time: 30 * 60 * 60 * 1000,
     };
   },
 
@@ -80,10 +83,13 @@ export default {
           let itemJson = JSON.parse(response.data.voteItem);
           this.voteItemList = itemJson;
           this.multiChoice = response.data.multiChoice;
-          // this.total = response.data.total;
-          // for (let i = 0; i < response.data.items.length; ++i) {
-          //   this.list.push(response.data.items[i]);
-          // }
+          let differ = Date.parse(response.data.voteEnd) - Date.now()
+          if (differ > 0) {
+            this.time = differ
+          } else {
+            Toast("投票已结束");
+            this.$router.push({ path: "/votingHall" });
+          }
         })
         .catch((error) => {
           console.log(error);
