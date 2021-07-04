@@ -7,7 +7,7 @@
       @click-left="onClickLeft"
     />
     <van-cell title="投票标题" :value="voteTitle" />
-    <van-cell title="剩余投票时间" >
+    <van-cell title="剩余投票时间">
       <van-count-down :time="time" format="DD 天 HH 时 mm 分 ss 秒" />
     </van-cell>
     <div v-if="multiChoice == 0">
@@ -83,9 +83,9 @@ export default {
           let itemJson = JSON.parse(response.data.voteItem);
           this.voteItemList = itemJson;
           this.multiChoice = response.data.multiChoice;
-          let differ = Date.parse(response.data.voteEnd) - Date.now()
+          let differ = Date.parse(response.data.voteEnd) - Date.now();
           if (differ > 0) {
-            this.time = differ
+            this.time = differ;
           } else {
             Toast("投票已结束");
             this.$router.push({ path: "/votingHall" });

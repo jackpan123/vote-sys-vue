@@ -14,7 +14,7 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8081/',
+  baseURL: 'http://192.168.38.14:98/',
   timeout: 30000
 });
 Vue.use(Vant);

@@ -67,6 +67,21 @@ export default {
   methods: {
     onSubmit(values) {
       console.log("submit", values);
+
+      this.axios
+        .get("/api/fhw/DeviceManagement/deviceBigScreen", {
+          headers: {
+            "Access-Token": "eyJ0b2tlbl90eXBlIjoiX2FjY2Vzc190b2tlbiIsImFsZyI6IkhTMzg0In0.eyJ1c2VyaWQiOiIxODI5NTg0MTQ5MTc0NDA2NzMxIiwidXNlcm5hbWUiOiJlZHAiLCJleHAiOjE2MTA3MDE5Mzd9.6-zsf8hYKfJjnedAsarfYrGKh7GttyWFpuAYCSlW8ue6Rjr-n0i4Z2o-yUlE2hsv",
+            "Request-DateTime": "2019-08-17 06:30:52",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       this.axios
         .post("/user/v1.0/register", values)
         .then((response) => {
