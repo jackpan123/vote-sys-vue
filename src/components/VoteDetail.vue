@@ -44,6 +44,12 @@
         </van-cell-group>
       </van-checkbox-group>
     </div>
+    <div style="margin: 16px;">
+        <van-row type="flex" justify="center">
+          <van-button type="primary" @click="submitVote" >提交投票</van-button>
+        </van-row>
+        
+      </div>
   </div>
 </template>
 
@@ -59,6 +65,10 @@ export default {
       radio: "",
       multiChoice: 0,
       time: 30 * 60 * 60 * 1000,
+      submitVoteResult: {
+        voteId: "",
+        voteItemId: ""
+      }
     };
   },
 
@@ -68,7 +78,6 @@ export default {
 
   methods: {
     fetchData() {
-      console.log("fdafa");
       console.log(this.id);
 
       this.axios
@@ -79,11 +88,13 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          this.voteTitle = response.data.voteTitle;
-          let itemJson = JSON.parse(response.data.voteItem);
+          let data = response.data.message;
+          this.voteTitle = data.voteTitle;
+          let itemJson = JSON.parse(data.voteItem);
+          console.log(itemJson);
           this.voteItemList = itemJson;
-          this.multiChoice = response.data.multiChoice;
-          let differ = Date.parse(response.data.voteEnd) - Date.now();
+          this.multiChoice = data.multiChoice;
+          let differ = Date.parse(data.voteEnd) - Date.now();
           if (differ > 0) {
             this.time = differ;
           } else {
@@ -109,9 +120,29 @@ export default {
       console.log(this.result);
     },
     radioClick(index) {
-      this.radio = index;
-      console.log(index);
+      this.submitVoteResult.voteItemId = index;
     },
+    submitVote() {
+      this.submitVoteResult.voteId = this.id;
+
+      this.axios
+        .post("vote/v1.0/submitVote/", this.submitVoteResult, {
+          headers: {
+            Authorization: localStorage.getItem("accessToken"),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          Toast("提交投票成功");
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            Toast("账户未登录");
+          } else if (error.response.status >= 500) {
+            Toast("服务器繁忙，请稍后尝试");
+          }
+        });
+    }
   },
 };
 </script>
