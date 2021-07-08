@@ -7,7 +7,8 @@
       @click-left="onClickLeft"
     />
     <van-cell title="投票标题" :value="voteTitle" />
-    <van-cell title="剩余投票时间">
+    <div v-if="voteStatus == 1">
+      <van-cell title="剩余投票时间">
       <van-count-down :time="time" format="DD 天 HH 时 mm 分 ss 秒" />
     </van-cell>
     <div v-if="multiChoice == 0">
@@ -50,12 +51,23 @@
         </van-row>
         
       </div>
+    </div>
+    <div v-else>
+      <div>
+        <ve-line :data="chartData"></ve-line>
+      </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
 import { Toast } from "vant";
+import { VeLine } from "v-charts";
 export default {
+  components: {
+    VeLine
+  },
   props: ["id"],
   data() {
     return {
@@ -68,7 +80,19 @@ export default {
       submitVoteResult: {
         voteId: "",
         voteItemId: ""
-      }
+      },
+      voteStatus: 1,
+      chartData: {
+            columns: ['日期', '销售额'],
+            rows: [
+              { '日期': '1月1日', '销售额': 123 },
+              { '日期': '1月2日', '销售额': 1223 },
+              { '日期': '1月3日', '销售额': 2123 },
+              { '日期': '1月4日', '销售额': 4123 },
+              { '日期': '1月5日', '销售额': 3123 },
+              { '日期': '1月6日', '销售额': 7123 }
+            ]
+          }
     };
   },
 
@@ -87,11 +111,9 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           let data = response.data.message;
           this.voteTitle = data.voteTitle;
           let itemJson = JSON.parse(data.voteItem);
-          console.log(itemJson);
           this.voteItemList = itemJson;
           this.multiChoice = data.multiChoice;
           let differ = Date.parse(data.voteEnd) - Date.now();
@@ -99,8 +121,27 @@ export default {
             this.time = differ;
           } else {
             Toast("投票已结束");
-            this.$router.push({ path: "/votingHall" });
+            this.voteStatus = 0;
           }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            Toast("账户未登录");
+          } else if (error.response.status >= 500) {
+            Toast("服务器繁忙，请稍后尝试");
+          }
+        });
+
+        this.axios
+        .get("vote/v1.0/getVoteItems/" + this.id, {
+          headers: {
+            Authorization: localStorage.getItem("accessToken"),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          
         })
         .catch((error) => {
           console.log(error);

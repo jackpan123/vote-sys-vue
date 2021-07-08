@@ -11,6 +11,7 @@ import VotingHall from '@/components/VotingHall'
 import CreateVote from '@/components/CreateVote'
 import VoteDetail from '@/components/VoteDetail'
 import Vant from 'vant';
+import VeLine from 'v-charts/lib/line.common'
 import 'vant/lib/index.css';
 
 const instance = axios.create({
@@ -18,6 +19,7 @@ const instance = axios.create({
   timeout: 30000
 });
 Vue.use(Vant);
+Vue.use(VeLine)
 Vue.use(VueAxios, instance);
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
