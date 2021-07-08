@@ -14,7 +14,7 @@
         v-for="item in list"
         :key="item.id"
         :title="item.voteTitle"
-        value="投票进行中"
+        :value="item.voteStatusDesc"
       />
     </van-list>
   </div>
@@ -46,7 +46,13 @@ export default {
         .then((response) => {
           this.total = response.data.total;
           for (let i = 0; i < response.data.items.length; ++i) {
-            this.list.push(response.data.items[i]);
+            let item = response.data.items[i]
+            if (item.voteStatus == '1') {
+              item.voteStatusDesc = "投票进行中";
+            } else {
+              item.voteStatusDesc = "投票已结束";
+            }
+            this.list.push(item);
           }
 
           // 加载状态结束
