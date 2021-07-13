@@ -83,14 +83,14 @@ export default {
       },
       voteStatus: 1,
       chartData: {
-            columns: ['日期', '销售额'],
+            columns: ['投票项', '投票数'],
             rows: [
-              { '日期': '1月1日', '销售额': 123 },
-              { '日期': '1月2日', '销售额': 1223 },
-              { '日期': '1月3日', '销售额': 2123 },
-              { '日期': '1月4日', '销售额': 4123 },
-              { '日期': '1月5日', '销售额': 3123 },
-              { '日期': '1月6日', '销售额': 7123 }
+              // { '投票项': '1月1日', '投票数': 123 },
+              // { '日期': '1月2日', '销售额': 1223 },
+              // { '日期': '1月3日', '销售额': 2123 },
+              // { '日期': '1月4日', '销售额': 4123 },
+              // { '日期': '1月5日', '销售额': 3123 },
+              // { '日期': '1月6日', '销售额': 7123 }
             ]
           }
     };
@@ -141,7 +141,12 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          
+          const itemList = response.data.message;
+          itemList.forEach(element => {
+            this.chartData.rows.push(
+              { '投票项': element.name, '投票数': element.number }
+            );
+          });
         })
         .catch((error) => {
           console.log(error);
